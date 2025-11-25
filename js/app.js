@@ -54,8 +54,8 @@ let tie ;
 let row=6;
 let cols=7;
 let isLocked = false;
-/*------------------------ Cached Element References ------------------------*/
 
+/*------------------------ Cached Element References ------------------------*/
 const cellEls= document.querySelectorAll(".cell")
 const messageEl=document.querySelector("#message")
 const resetEl=document.querySelector("#reset")
@@ -65,33 +65,41 @@ const pupElement = document.getElementById("pup")
 const openButomn=document.querySelector("#rules")
 const closeButomn=document.querySelector("#close-button")
 
+/*----------------------------- Event Listeners -----------------------------*/
+resetEl.addEventListener("click",init )
+cellEls.forEach(cell => {cell.addEventListener('click', handleClick);});
+openButomn.addEventListener("click",showPup )
+closeButomn.addEventListener("click", closePup);
 
 /*-------------------------------- Functions --------------------------------*/
 function init(){
-board=["","","","","","","","","","","","","","","","","","","","","",
+    board=["","","","","","","","","","","","","","","","","","","","","",
            "","","","","","","","","","","","","","","","","","","","",""];
-turn="🔴"
-winner =false
-tie = false
-isLocked = false
-render()}
+    turn="🔴"
+    winner =false
+    tie = false
+    isLocked = false
+    render()
+}
+
+
 function showPup(){
-    pupElement.classList.add("open")
-  
+    pupElement.classList.add("open") 
 }
 
 function closePup(){
-    pupElement.classList.remove("open")
-     
+    pupElement.classList.remove("open")  
 }
 
 function dropDisc (){
   dropDiscAudio.volume = 1
-  dropDiscAudio.play()}
+  dropDiscAudio.play()
+}
 
 function audioWin (){
   winAudio.volume = 0.5
-  winAudio.play()}
+  winAudio.play()
+}
 
 
 function render(){
@@ -102,21 +110,21 @@ function render(){
 
 function updateMessage(){
     if((winner)){
-     let winningPlayer = turn
-     if (turn === '🔴') {
-        winningPlayer = '🟡';
+        let winningPlayer = turn
+        if (turn === '🔴') {
+             winningPlayer = '🟡';
         }
         else {
-         winningPlayer = '🔴';
+             winningPlayer = '🔴';
         }
-        messageEl.textContent=`${turn} WON!`
+        messageEl.textContent=`${turn} WON! `
         audioWin ()
      }
     else if(tie){
-       messageEl.textContent='The game ended in a draw'
+         messageEl.textContent='The game ended in a draw'
     }
     else  {
-        messageEl.textContent=`${turn} Player role `
+            messageEl.textContent=`${turn} Player role  `
         }
 }
 
@@ -143,11 +151,12 @@ function checkForTie(){
 function updateBoard(){
     board.forEach((value,index) =>
     {const cell = cellEls[index]
-    cell.textContent=value
+        cell.textContent=value
 
-    if (!cell.querySelector("span")) {
-       cell.textContent = value;
-     } } )}
+        if (!cell.querySelector("span")) {
+             cell.textContent = value;
+        } } )
+    }
 
 
 function checkForWinner(){
@@ -165,14 +174,13 @@ function checkForWinner(){
         const valC = board[c]
         const valD = board[d]
 
-    if(valA!==""&&valA===valB && valA===valC &&valA===valD ){
-        winner=true
-        audioWin ()
-        return
+        if(valA!==""&&valA===valB && valA===valC &&valA===valD ){
+             winner=true
+             audioWin ()
+             return
     }
-
-
-}}
+  }
+}
 
 function handleClick(event){
     if(winner || tie || isLocked ) return;
@@ -223,9 +231,5 @@ init()
 
 
 
-/*----------------------------- Event Listeners -----------------------------*/
-resetEl.addEventListener("click",init )
-cellEls.forEach(cell => {cell.addEventListener('click', handleClick);});
-openButomn.addEventListener("click",showPup )
-closeButomn.addEventListener("click", closePup);
+
 
