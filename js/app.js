@@ -44,8 +44,6 @@ const winningCombos = [
     // مجموع 102 مجموعة فائزة (تم تقليل المجموعات الخاطئة في القطر لتكون 102)
 ];
 
-
-
 /*---------------------------- Variables (state) ----------------------------*/
 
 let board=["","","","","","","","","","","","","","","","","","","","","",
@@ -55,13 +53,17 @@ let winner;
 let tie ;
 let row=6;
 let cols=7;
+let isLocked = false;
 /*------------------------ Cached Element References ------------------------*/
 
 const cellEls= document.querySelectorAll(".cell")
 const messageEl=document.querySelector("#message")
 const resetEl=document.querySelector("#reset")
-
-
+const dropDiscAudio= new Audio('dropping-of-the-ring-404874.mp3')
+const winAudio = new Audio('applause-small-audience-97257.mp3')
+const pupElement = document.getElementById("pup")
+const openButomn=document.querySelector("#rules")
+const closeButomn=document.querySelector("#close-button")
 
 
 /*-------------------------------- Functions --------------------------------*/
@@ -71,9 +73,25 @@ board=["","","","","","","","","","","","","","","","","","","","","",
 turn="🔴"
 winner =false
 tie = false
+isLocked = false
 render()}
+function showPup(){
+    pupElement.classList.add("open")
+  
+}
 
+function closePup(){
+    pupElement.classList.remove("open")
+     
+}
 
+function dropDisc (){
+  dropDiscAudio.volume = 1
+  dropDiscAudio.play()}
+
+function audioWin (){
+  winAudio.volume = 0.5
+  winAudio.play()}
 
 
 function render(){
@@ -92,6 +110,7 @@ function updateMessage(){
          winningPlayer = '🔴';
         }
         messageEl.textContent=`${turn} WON!`
+        audioWin ()
      }
     else if(tie){
        messageEl.textContent='The game ended in a draw'
@@ -115,11 +134,9 @@ function switchPlayerTurn(){
 
 
 function checkForTie(){
-
     if(winner)return
     if(!board.includes("") ){
-        tie=true
-    }
+        tie=true}
     else{tie=false}
 }
 
@@ -130,9 +147,7 @@ function updateBoard(){
 
     if (!cell.querySelector("span")) {
        cell.textContent = value;
-     }
-       
- } )}
+     } } )}
 
 
 function checkForWinner(){
@@ -152,6 +167,7 @@ function checkForWinner(){
 
     if(valA!==""&&valA===valB && valA===valC &&valA===valD ){
         winner=true
+        audioWin ()
         return
     }
 
@@ -159,25 +175,18 @@ function checkForWinner(){
 }}
 
 function handleClick(event){
-    if(winner || tie) return;
-    
+    if(winner || tie || isLocked ) return;
     const colsIndex = Number(event.currentTarget.dataset.columns);
     if(isNaN(colsIndex)) return;
-
     let indexplace = -1;
     for(let i = row-1; i >=0; i--){
         const index = i * cols + colsIndex;
         if(board[index] === ''){
             indexplace = index;
             break;
-        }
-    }
-
+    }}
     if(indexplace === -1) return; 
-
-    //console.log(`Placing piece at index: ${indexplace} for column: ${colsIndex}`);
-    placePiece(indexplace);
-   
+    placePiece(indexplace);  
 }
 
 
@@ -186,7 +195,7 @@ function placePiece(indexplace){
     const playerClass = turn === '🔴' ? 'player-one' : 'player-two';
     board[indexplace] = turn;
     
-   
+    isLocked = true;
     const disc = document.createElement("div"); 
     disc.classList.add("disc", playerClass, "fall");
     disc.textContent = turn; 
@@ -197,33 +206,26 @@ function placePiece(indexplace){
     disc.style.animationDuration = duration + 's';
     cellElement.appendChild(disc); 
    
-    
+    dropDisc ()
+
     function stabilizeDisc() {
         disc.removeEventListener("animationend", stabilizeDisc); 
-
-        
         checkForWinner(); 
         checkForTie();
-        
         if (!winner) {
-           switchPlayerTurn(); 
+            switchPlayerTurn()}
+            isLocked = false;
+            render(); 
         }
-        render(); 
-    }
-    
-    disc.addEventListener("animationend", stabilizeDisc);
-    
+    disc.addEventListener("animationend", stabilizeDisc);  
 }
-
 init()
 
 
 
 /*----------------------------- Event Listeners -----------------------------*/
-
-
-
-
 resetEl.addEventListener("click",init )
-
 cellEls.forEach(cell => {cell.addEventListener('click', handleClick);});
+openButomn.addEventListener("click",showPup )
+closeButomn.addEventListener("click", closePup);
+
