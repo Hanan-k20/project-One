@@ -59,11 +59,13 @@ let isLocked = false;
 const cellEls= document.querySelectorAll(".cell")
 const messageEl=document.querySelector("#message")
 const resetEl=document.querySelector("#reset")
-const dropDiscAudio= new Audio('dropping-of-the-ring-404874.mp3')
-const winAudio = new Audio('applause-small-audience-97257.mp3')
+const dropDiscAudio= new Audio('New folder/dropping-of-the-ring-404874.mp3')
+const winAudio = new Audio('New folder/applause-small-audience-97257.mp3')
+const rulesAudio = new Audio('New folder/Mohammed Mamoun 1.mp3')
 const pupElement = document.getElementById("pup")
 const openButomn=document.querySelector("#rules")
 const closeButomn=document.querySelector("#close-button")
+const rulesImage=document.querySelector("#rules-image")
 
 /*----------------------------- Event Listeners -----------------------------*/
 resetEl.addEventListener("click",init )
@@ -79,16 +81,22 @@ function init(){
     winner =false
     tie = false
     isLocked = false
+    winAudio.pause() 
+    winAudio.surrenTime=0
     render()
 }
 
 
 function showPup(){
     pupElement.classList.add("open") 
+    rulesImage.addEventListener("click", audioRules);
 }
 
 function closePup(){
-    pupElement.classList.remove("open")  
+    pupElement.classList.remove("open") 
+    rulesAudio.pause() 
+    rulesAudio.surrenTime=0
+    
 }
 
 function dropDisc (){
@@ -99,6 +107,12 @@ function dropDisc (){
 function audioWin (){
   winAudio.volume = 0.5
   winAudio.play()
+}
+
+function audioRules (){
+  rulesAudio.volume = 1
+  rulesAudio.play()
+ 
 }
 
 
