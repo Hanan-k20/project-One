@@ -92,6 +92,7 @@ function showPup(){
     rulesImage.addEventListener("click", audioRules);
 }
 
+
 function closePup(){
     pupElement.classList.remove("open") 
     rulesAudio.pause() 
@@ -99,15 +100,18 @@ function closePup(){
     
 }
 
+
 function dropDisc (){
   dropDiscAudio.volume = 1
   dropDiscAudio.play()
 }
 
+
 function audioWin (){
   winAudio.volume = 0.5
   winAudio.play()
 }
+
 
 function audioRules (){
   rulesAudio.volume = 1
@@ -143,7 +147,6 @@ function updateMessage(){
 }
 
 
-
 function switchPlayerTurn(){
     if(winner) 
         {return}
@@ -162,6 +165,7 @@ function checkForTie(){
     else{tie=false}
 }
 
+
 function updateBoard(){
     board.forEach((value,index) =>
     {const cell = cellEls[index]
@@ -170,7 +174,7 @@ function updateBoard(){
         if (!cell.querySelector("span")) {
              cell.textContent = value;
         } } )
-    }
+}
 
 
 function checkForWinner(){
@@ -241,6 +245,7 @@ function placePiece(indexplace){
         }
     disc.addEventListener("animationend", stabilizeDisc);  
 }
+
 init()
 
 
